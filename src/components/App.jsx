@@ -10,12 +10,25 @@ import {
   deleteContact,
   onFilterChange,
 } from './redux/phoneBookReducer';
+import { useEffect } from 'react';
+import { requestPhoneBookThunk } from './redux/thunks';
+import {
+  selectContacts,
+  selectFilter,
+  selectIsLoading,
+} from './redux/selectors';
+import Loader from './Loader/Loader';
 
 export function App() {
-  const contacts = useSelector(state => state.phoneBook.contacts);
-  const filter = useSelector(state => state.phoneBook.filter);
+  const contacts = useSelector(selectContacts);
+  const filter = useSelector(selectFilter);
+  const isLoading = useSelector(selectIsLoading);
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(requestPhoneBookThunk());
+  }, [dispatch]);
 
   const onFilter = event => {
     const inputValue = event.target.value;
@@ -46,14 +59,32 @@ export function App() {
     );
   });
 
-  return (
-    <div className="container">
-      <ContactsForm onSubmit={handleFormSubmit} />
-      <Filter label="Name" type="text" onChange={onFilter} />
-      <ContactList
-        contacts={filteredContactsByName}
-        onDeleteContact={onDelete}
-      />
-    </div>
-  );
-}
+//   return (
+//     <div className="container">
+//       {isLoading ? (<Loader />) : 
+//         <div></div>
+//       <ContactsForm onSubmit={handleFormSubmit} />
+//       <Filter label="Name" type="text" onChange={onFilter} />
+//       <ContactList
+//         contacts={filteredContactsByName}
+//         onDeleteContact={onDelete}
+//       />
+//     </div>
+//   )
+// };
+
+
+return (
+  <div className="container">
+    {isLoading ? (
+      <Loader /> 
+    ) : (
+      <div>
+        <ContactsForm onSubmit={handleFormSubmit} />
+        <Filter label="Name" type="text" onChange={onFilter} />
+          <ContactList contacts={filteredContactsByName}
+            onDeleteContact={onDelete} />
+      </div>
+    )}
+  </div>
+);
