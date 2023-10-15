@@ -59,32 +59,20 @@ export function App() {
     );
   });
 
-//   return (
-//     <div className="container">
-//       {isLoading ? (<Loader />) : 
-//         <div></div>
-//       <ContactsForm onSubmit={handleFormSubmit} />
-//       <Filter label="Name" type="text" onChange={onFilter} />
-//       <ContactList
-//         contacts={filteredContactsByName}
-//         onDeleteContact={onDelete}
-//       />
-//     </div>
-//   )
-// };
-
-
-return (
-  <div className="container">
-    {isLoading ? (
-      <Loader /> 
-    ) : (
-      <div>
-        <ContactsForm onSubmit={handleFormSubmit} />
-        <Filter label="Name" type="text" onChange={onFilter} />
-          <ContactList contacts={filteredContactsByName}
-            onDeleteContact={onDelete} />
-      </div>
-    )}
-  </div>
-);
+  return (
+    <div className="container">
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <div>
+          <ContactsForm onSubmit={handleFormSubmit} />
+          <Filter label="Name" type="text" onChange={onFilter} />
+          <ContactList
+            contacts={filteredContactsByName}
+            onDeleteContact={onDelete}
+          />
+        </div>
+      )}
+    </div>
+  );
+}
