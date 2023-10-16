@@ -5,13 +5,13 @@ import { nanoid } from 'nanoid';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  addContact,
-  deleteContact,
-  onFilterChange,
-} from './redux/phoneBookReducer';
+import { onFilterChange } from './redux/phoneBookReducer';
 import { useEffect } from 'react';
-import { requestPhoneBookThunk } from './redux/thunks';
+import {
+  requestAddContactThunk,
+  requestDeleteContactThunk,
+  requestPhoneBookThunk,
+} from './redux/thunks';
 import {
   selectContacts,
   selectFilter,
@@ -35,27 +35,25 @@ export function App() {
     dispatch(onFilterChange(inputValue));
   };
 
-  const onDelete = contactId => {
-    dispatch(deleteContact(contactId));
+  const onDelete = id => {
+    dispatch(requestDeleteContactThunk(id));
   };
 
-  const handleFormSubmit = data => {
-    const { name, number } = data;
-    if (
-      contacts.some(
-        contact => contact.name === name && contact.number === number
-      )
-    ) {
+  const handleFormSubmit = ({ name, phone }) => {
+    const hasDuplicateContacts = contacts.some(
+      contact => contact.name === name && contact.phone === phone
+    );
+    if (hasDuplicateContacts) {
       alert(`"${name}" is already in contacts!`);
       return;
     }
-    dispatch(addContact({ ...data, id: nanoid() }));
+    dispatch(requestAddContactThunk({ name, phone, id: nanoid() }));
   };
 
   const filteredContactsByName = contacts.filter(contact => {
     return (
       contact.name.toLowerCase().includes(filter.trim().toLowerCase()) ||
-      contact.number.includes(filter)
+      contact.phone.includes(filter)
     );
   });
 

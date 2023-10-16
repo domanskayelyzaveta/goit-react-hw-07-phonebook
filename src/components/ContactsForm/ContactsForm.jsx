@@ -5,23 +5,23 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 export function ContactsForm(props) {
   const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+  const [phone, setPhone] = useState('');
 
   const handleChange = event => {
     const { name, value } = event.target;
     if (name === 'name') {
       setName(value);
-    } else if (name === 'number') {
-      setNumber(value);
+    } else if (name === 'phone') {
+      setPhone(value);
     }
   };
 
   const handleSubmit = event => {
     event.preventDefault();
 
-    props.onSubmit({ name, number });
+    props.onSubmit({ name, phone });
     setName('');
-    setNumber('');
+    setPhone('');
   };
 
   return (
@@ -38,14 +38,14 @@ export function ContactsForm(props) {
           value={name}
           onChange={handleChange}
         />
-        <label className="title">Number</label>
+        <label className="title">phone</label>
         <input
           className="form-control mb-3"
-          type="number"
-          name="number"
+          type="phone"
+          name="phone"
           required
           placeholder="000-00-00"
-          value={number}
+          value={phone}
           onChange={handleChange}
         />
         <button className="addContactBtn" type="submit">

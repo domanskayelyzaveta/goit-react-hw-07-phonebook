@@ -11,11 +11,8 @@ export const addContact = async newContact => {
   const { data } = await $instance.post('/contacts', newContact);
   return data;
 };
+
 export const deleteContact = async id => {
-  const { data } = await $instance.delete('/contacts', {
-    params: {
-      id,
-    },
-  });
+  const { data } = await $instance.delete(`/contacts/${id}`);
   return data;
 };

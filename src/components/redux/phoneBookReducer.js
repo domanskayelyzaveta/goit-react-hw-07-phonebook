@@ -1,5 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchPhoneBook } from 'service/Api';
+import {
+  requestAddContactThunk,
+  requestDeleteContactThunk,
+  requestPhoneBookThunk,
+} from './thunks';
 
 const initialState = {
   contacts: [],
@@ -11,41 +15,47 @@ const initialState = {
 const phoneBookSlice = createSlice({
   name: 'phoneBook',
   initialState,
-  reducers: {},
+  reducers: {
+    onFilterChange: (state, action) => {
+      state.filter = action.payload;
+    },
+  },
   extraReducers: builder => {
     builder
-      .addCase(fetchPhoneBook.pending, (state, action) => {
+      .addCase(requestPhoneBookThunk.pending, (state, action) => {
         state.isLoading = true;
         state.error = null;
       })
-      .addCase(fetchPhoneBook.fulfilled, (state, action) => {
+      .addCase(requestPhoneBookThunk.fulfilled, (state, action) => {
         state.isLoading = false;
         state.contacts = action.payload;
       })
-      .addCase(fetchPhoneBook.rejected, (state, action) => {
+      .addCase(requestPhoneBookThunk.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       })
-      .addCase(addContact.pending, (state, action) => {
+      .addCase(requestAddContactThunk.pending, (state, action) => {
         state.isLoading = true;
       })
-      .addCase(addContact.fulfilled, (state, action) => {
+      .addCase(requestAddContactThunk.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.contacts = [...state.contacts, action.payload]; //// action.payload ???
+        state.contacts = [...state.contacts, action.payload];
       })
-      .addCase(addContact.rejected, (state, action) => {
+      .addCase(requestAddContactThunk.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       })
-      .addCase(deleteContact.pending, (state, action) => {
+      .addCase(requestDeleteContactThunk.pending, (state, action) => {
         state.isLoading = true;
         state.error = null;
       })
-      .addCase(deleteContact.fulfilled, (state, action) => {
+      .addCase(requestDeleteContactThunk.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.contacts = action.payload;
+        state.contacts = state.contacts.filter(
+          contact => contact.id !== action.payload.id
+        );
       })
-      .addCase(deleteContact.rejected, (state, action) => {
+      .addCase(requestDeleteContactThunk.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       });
@@ -53,5 +63,4 @@ const phoneBookSlice = createSlice({
 });
 
 export const phoneBookReducer = phoneBookSlice.reducer;
-export const { deleteContact, addContact, onFilterChange } =
-  phoneBookSlice.actions;
+export const { onFilterChange } = phoneBookSlice.actions;

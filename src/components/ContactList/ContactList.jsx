@@ -1,27 +1,19 @@
 import React from 'react';
 import { nanoid } from 'nanoid';
 import './ContactList.css';
-import { useDispatch } from 'react-redux';
-import { deleteContact } from 'service/Api';
 
-export const ContactList = ({ contacts }) => {
-  const dispatch = useDispatch();
-
-  const handleDelete = id => {
-    dispatch(deleteContact(id));
-  };
-
+export const ContactList = ({ contacts, onDeleteContact }) => {
   return (
     <div>
       <ul>
-        {contacts.map(({ id, name, number }) => (
+        {contacts.map(({ id, name, phone }) => (
           <li key={nanoid()}>
-            {name} : {number}
+            {name} : {phone}
             <button
               id={nanoid(id)}
               className="contactListBtn"
               type="button"
-              onClick={() => handleDelete(id)}
+              onClick={() => onDeleteContact(id)}
             >
               Delete
             </button>
@@ -31,23 +23,3 @@ export const ContactList = ({ contacts }) => {
     </div>
   );
 };
-
-// export const ContactList = ({ contacts, onDeleteContact }) => (
-//   <div>
-//     <ul>
-//       {contacts.map(({ id, name, number }) => (
-//         <li key={nanoid()}>
-//           {name} : {number}
-//           <button
-//             id={nanoid(id)}
-//             className="contactListBtn"
-//             type="button"
-//             onClick={() => onDeleteContact(id)}
-//           >
-//             Delete
-//           </button>
-//         </li>
-//       ))}
-//     </ul>
-//   </div>
-// );

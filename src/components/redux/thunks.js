@@ -13,6 +13,11 @@ export const requestPhoneBookThunk = createAsyncThunk(
   }
 );
 
+// export const requestPhoneBookThunk = createAsyncThunk(
+//   'phoneBook/fetchPhoneBook',
+//   () => fetchPhoneBook()
+// );
+
 export const requestAddContactThunk = createAsyncThunk(
   'phoneBookThunk/addContact',
   async (newContact, thunkAPI) => {
@@ -25,14 +30,24 @@ export const requestAddContactThunk = createAsyncThunk(
   }
 );
 
+// export const requestAddContactThunk = createAsyncThunk(
+//   'phoneBookThunk/addContact',
+//   newContact => addContact(newContact)
+// );
+
 export const requestDeleteContactThunk = createAsyncThunk(
   'phoneBookThunk/deleteContact',
-  async (contactId, thunkAPI) => {
+  async (id, thunkAPI) => {
     try {
-      const response = await deleteContact(contactId);
+      const response = await deleteContact(id);
       return response;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
   }
 );
+
+// export const requestDeleteContactThunk = createAsyncThunk(
+//   'phoneBookThunk/deleteContact',
+//   id => deleteContact(id)
+// );
